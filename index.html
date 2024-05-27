@@ -1,114 +1,185 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>My playlist</title>
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-        background-image: url('img/guitar-756326_1280.jpg'); /* Background image */
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat; /* Prevent image repetition */
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-    .player-container {
-        text-align: center;
-        color: #ffffff; /* Text color */
-        margin-top: auto;
-        margin-bottom: 20px;
-    }
-    .playlist {
-        list-style: none;
-        padding: 0;
-        max-width: 800px;
-        width: 100%;
-    }
-    .playlist li {
-        margin-bottom: 10px;
-    }
-    .song-button {
-        background-color: #3498db; /* Button color */
-        color: #ffffff; /* Text color */
-        padding: 10px 20px;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 16px;
-        width: 100%;
-        text-align: left;
-        transition: background-color 0.3s ease;
-    }
-    .song-button:hover {
-        background-color: #2980b9; /* Hover color */
-    }
-</style>
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SK - Your favourite music is here</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <nav>
+      <ul>
+        <li class="brand"><img src="logo.png" alt="Spotify" /> SK - Music</li>
+        <li>Home</li>
+        <li>About</li>
+      </ul>
+    </nav>
 
-<ul class="playlist" id="playlist">
-    <!-- Songs will be dynamically added here -->
-</ul>
+    <div class="container">
+      <div class="songList">
+        <h1>Best of My - Playlist</h1>
+        <div class="songItemContainer">
+          <div class="songItem">
+            <img src="covers/1.jpg" alt="1" />
+            <span class="songName">Heeriye</span>
+            <span class="songlistplay">
+              <span class="timestamp"
+                >05:34
+                <i id="0" class="far songItemPlay fa-play-circle"></i>
+              </span>
+            </span>
+          </div>
+          <div class="songItem">
+            <img src="covers/2.jpg" alt="2" />
+            <span class="songName">Chaleya</span>
+            <span class="songlistplay">
+              <span class="timestamp"
+                >04:45
+                <i id="1" class="far songItemPlay fa-play-circle"></i>
+              </span>
+            </span>
+          </div>
+          <div class="songItem">
+            <img src="covers/3.jpg" alt="3" />
+            <span class="songName">Dekha Tenu Pehli Pehli Baar Ve</span>
+            <span class="songlistplay">
+              <span class="timestamp"
+                >05:12
+                <i id="2" class="far songItemPlay fa-play-circle"></i>
+              </span>
+            </span>
+          </div>
+          <div class="songItem">
+            <img src="covers/4.jpg" alt="4" />
+            <span class="songName">Kabhi Shaam Dhale</span>
+            <span class="songlistplay">
+              <span class="timestamp"
+                >04:23
+                <i id="3" class="far songItemPlay fa-play-circle"></i>
+              </span>
+            </span>
+          </div>
+          <div class="songItem">
+            <img src="covers/6.jpg" alt="6" />
+            <span class="songName">Maan Meri Jaan</span>
+            <span class="songlistplay">
+              <span class="timestamp"
+                >03:58
+                <i id="4" class="far songItemPlay fa-play-circle"></i>
+              </span>
+            </span>
+          </div>
+          <div class="songItem">
+            <img src="covers/7.jpg" alt="7" />
+            <span class="songName">Kahani Suno</span>
+            <span class="songlistplay">
+              <span class="timestamp"
+                >04:16
+                <i id="5" class="far songItemPlay fa-play-circle"></i>
+              </span>
+            </span>
+          </div>
+          <div class="songItem">
+            <img src="covers/8.jpg" alt="8" />
+            <span class="songName">O Mahi O Mahi</span>
+            <span class="songlistplay">
+              <span class="timestamp"
+                >05:01
+                <i id="6" class="far songItemPlay fa-play-circle"></i>
+              </span>
+            </span>
+          </div>
+          <div class="songItem">
+            <img src="covers/10.jpg" alt="10" />
+            <span class="songName">Ve Kamleya</span>
+            <span class="songlistplay">
+              <span class="timestamp"
+                >04:20
+                <i id="7" class="far songItemPlay fa-play-circle"></i>
+              </span>
+            </span>
+          </div>
+          <!-- Add new song items here -->
+          <div class="songItem">
+            <img src="covers/10.jpg" alt="10" />
+            <span class="songName">Dil Kya Kare</span>
+            <span class="songlistplay">
+              <span class="timestamp"
+                >04:50
+                <i id="10" class="far songItemPlay fa-play-circle"></i>
+              </span>
+            </span>
+          </div>
+          <div class="songItem">
+            <img src="covers/10.jpg" alt="10" />
+            <span class="songName">Dil Pe Zakhm</span>
+            <span class="songlistplay">
+              <span class="timestamp"
+                >03:45
+                <i id="11" class="far songItemPlay fa-play-circle"></i>
+              </span>
+            </span>
+          </div>
+          <div class="songItem">
+            <img src="covers/10.jpg" alt="10" />
+            <span class="songName">Kaash Tu Meri Ho Jaaye</span>
+            <span class="songlistplay">
+              <span class="timestamp"
+                >05:12
+                <i id="12" class="far songItemPlay fa-play-circle"></i>
+              </span>
+            </span>
+          </div>
+          <div class="songItem">
+            <img src="covers/10.jpg" alt="10" />
+            <span class="songName">Kesariya Tera Ishq Hai Piya</span>
+            <span class="songlistplay">
+              <span class="timestamp"
+                >04:23
+                <i id="13" class="far songItemPlay fa-play-circle"></i>
+              </span>
+            </span>
+          </div>
+          <div class="songItem">
+            <img src="covers/10.jpg" alt="10" />
+            <span class="songName">Pehli Pehli Baarish</span>
+            <span class="songlistplay">
+              <span class="timestamp"
+                >03:58
+                <i id="14" class="far songItemPlay fa-play-circle"></i>
+              </span>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="songBanner"></div>
+    </div>
 
-<div class="player-container">
-    <h2>Playlist</h2>
-    <audio id="audioPlayer" controls autoplay onended="playNext()">
-        Your browser does not support the audio element.
-    </audio>
-</div>
-
-<script>
-    const songs = [
-        { name: "Chaleya", src: "songs/Chaleya(PagalWorld.com.sb).mp3" },
-        { name: "Dekha Tenu Pehli Pehli Baar Ve", src: "songs/Dekha Tenu Pehli Pehli Baar Ve(PagalWorld.com.sb).mp3" },
-        { name: "Heeriye", src: "songs/_Heeriye(PagalWorld.com.sb).mp3" },
-        { name: "Kabhi Shaam Dhale", src: "songs/Kabhi Shaam Dhale(PagalWorld.com.sb).mp3" },
-        { name: "Maan Meri Jaan", src: "songs/Maan Meri Jaan(PagalWorld.com.sb).mp3" },
-        { name: "O Mahi O Mahi", src: "songs/O Mahi O Mahi(PagalWorld.com.sb).mp3" },
-        { name: "Kahani Suno", src: "songs/Kahani Suno(PagalWorld.com.sb).mp3" },
-        { name: "Ve Kamleya", src: "songs/Ve Kamleya(PagalWorld.com.sb).mp3" },
-    ];
-
-    const audioPlayer = document.getElementById('audioPlayer');
-    const playlist = document.getElementById('playlist');
-    let currentSongIndex = 0;
-
-    // Function to populate the playlist
-    function populatePlaylist() {
-        songs.sort((a, b) => a.name.localeCompare(b.name)); // Sort songs alphabetically
-        songs.forEach((song, index) => {
-            const listItem = document.createElement('li');
-            const button = document.createElement('button');
-            button.textContent = song.name;
-            button.className = 'song-button';
-            button.addEventListener('click', () => playSong(index));
-            listItem.appendChild(button);
-            playlist.appendChild(listItem);
-        });
-    }
-
-    // Function to play a song
-    function playSong(index) {
-        const song = songs[index];
-        audioPlayer.src = song.src;
-        audioPlayer.play();
-        currentSongIndex = index;
-    }
-
-    // Function to play the next song
-    function playNext() {
-        currentSongIndex = (currentSongIndex + 1) % songs.length;
-        playSong(currentSongIndex);
-    }
-
-    // Initialize the playlist
-    populatePlaylist();
-</script>
-
-</body>
+    <div class="bottom">
+      <input
+        type="range"
+        name="range"
+        id="myProgressBar"
+        min="0"
+        value="0"
+        max="100"
+      />
+      <div class="icons">
+        <!-- fontawesome icons -->
+        <i class="fas fa-3x fa-step-backward" id="previous"></i>
+        <i class="far fa-3x fa-play-circle" id="masterPlay"></i>
+        <i class="fas fa-3x fa-step-forward" id="next"></i>
+      </div>
+      <div class="songInfo">
+        <img src="playing.gif" width="42px" alt="" id="gif" />
+        <span id="masterSongName">Heeriye</span>
+      </div>
+    </div>
+    <script src="script.js"></script>
+    <script
+      src="https://kit.fontawesome.com/26504e4a1f.js"
+      crossorigin="anonymous"
+    ></script>
+  </body>
 </html>
