@@ -24,6 +24,7 @@ let songs = [
     { songName: "Kesariya Tera Ishq Hai Piya", filePath: "songs/Kesariya Tera Ishq Hai Piya(PagalWorld.com.sb).mp3", coverPath: "covers/10.jpg" },
     { songName: "Pehli Pehli Baarish", filePath: "songs/Pehli Pehli Baarish(PagalWorld.com.sb).mp3", coverPath: "covers/10.jpg" },
 
+        { songName: "𝐓𝐞𝐫𝐚 𝐌𝐞𝐫𝐚 𝐇𝐚𝐢 𝐏𝐲𝐚𝐫 𝐀𝐦𝐚r", filePath: "songs/𝐓𝐞𝐫𝐚 𝐌𝐞𝐫𝐚 𝐇𝐚𝐢 𝐏𝐲𝐚𝐫 𝐀𝐦𝐚r.mp3", coverPath: "covers/6.jpg" },
 ];
 
 songItems.forEach((element, i) => {
