@@ -1,4 +1,4 @@
-console.log("Welcome to Spotify");
+console.log("Welcome to SK-Music");
 
 // Initialize the Variables
 let songIndex = 0;
