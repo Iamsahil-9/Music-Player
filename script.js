@@ -23,8 +23,7 @@ let songs = [
     { songName: "Kaash Tu Meri Ho Jaaye", filePath: "songs/Kaash Tu Meri Ho Jaaye(PagalWorld.com.sb).mp3", coverPath: "covers/10.jpg" },
     { songName: "Kesariya Tera Ishq Hai Piya", filePath: "songs/Kesariya Tera Ishq Hai Piya(PagalWorld.com.sb).mp3", coverPath: "covers/10.jpg" },
     { songName: "Pehli Pehli Baarish", filePath: "songs/Pehli Pehli Baarish(PagalWorld.com.sb).mp3", coverPath: "covers/10.jpg" },
-
-        { songName: "𝐓𝐞𝐫𝐚 𝐌𝐞𝐫𝐚 𝐇𝐚𝐢 𝐏𝐲𝐚𝐫 𝐀𝐦𝐚r", filePath: "songs/𝐓𝐞𝐫𝐚 𝐌𝐞𝐫𝐚 𝐇𝐚𝐢 𝐏𝐲𝐚𝐫 𝐀𝐦𝐚r.mp3", coverPath: "covers/6.jpg" },
+    { songName: "𝐓𝐞𝐫𝐚 𝐌𝐞𝐫𝐚 𝐇𝐚𝐢 𝐏𝐲𝐚𝐫 𝐀𝐦𝐚r", filePath: "songs/𝐓𝐞𝐫𝐚 𝐌𝐞𝐫𝐚 𝐇𝐚𝐢 𝐏𝐲𝐚𝐫 𝐀𝐦𝐚r.mp3", coverPath: "covers/6.jpg" },
 ];
 
 songItems.forEach((element, i) => {
@@ -110,4 +109,22 @@ document.getElementById('previous').addEventListener('click', () => {
     masterPlay.classList.remove('fa-play-circle');
     masterPlay.classList.add('fa-pause-circle');
     console.log(`Previous: ${songs[songIndex].songName}`);
+});
+
+// Volume control functionality
+const volumeUp = document.getElementById('volumeUp');
+const volumeDown = document.getElementById('volumeDown');
+
+volumeUp.addEventListener('click', () => {
+    if (audioElement.volume < 1) {
+        audioElement.volume = Math.min(1, audioElement.volume + 0.1);
+        console.log(`Volume: ${audioElement.volume}`);
+    }
+});
+
+volumeDown.addEventListener('click', () => {
+    if (audioElement.volume > 0) {
+        audioElement.volume = Math.max(0, audioElement.volume - 0.1);
+        console.log(`Volume: ${audioElement.volume}`);
+    }
 });
