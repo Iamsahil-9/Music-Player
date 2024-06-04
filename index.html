@@ -92,14 +92,15 @@
         { name: "Qayamat Na Dhao", src: "songs/Qayamat Na Dhao(PagalWorld.com.sb).mp3", coverPath: "" }
     ];
 
+    let sortedSongs = [...songs]; // Create a copy of the songs array to sort
     const audioPlayer = document.getElementById('audioPlayer');
     const playlist = document.getElementById('playlist');
     let currentSongIndex = 0;
 
     // Function to populate the playlist
     function populatePlaylist() {
-        songs.sort((a, b) => a.name.localeCompare(b.name)); // Sort songs alphabetically
-        songs.forEach((song, index) => {
+        sortedSongs.sort((a, b) => a.name.localeCompare(b.name)); // Sort songs alphabetically
+        sortedSongs.forEach((song, index) => {
             const listItem = document.createElement('li');
             const cover = document.createElement('img');
             cover.src = song.coverPath;
@@ -116,7 +117,7 @@
 
     // Function to play a song
     function playSong(index) {
-        const song = songs[index];
+        const song = sortedSongs[index];
         audioPlayer.src = song.src;
         audioPlayer.play();
         currentSongIndex = index;
@@ -124,7 +125,7 @@
 
     // Function to play the next song
     function playNext() {
-        currentSongIndex = (currentSongIndex + 1) % songs.length;
+        currentSongIndex = (currentSongIndex + 1) % sortedSongs.length;
         playSong(currentSongIndex);
     }
 
