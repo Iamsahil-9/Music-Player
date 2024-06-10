@@ -3,23 +3,23 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>.</title>
+<title>Music Playlist</title>
 <style>
     body {
         font-family: Arial, sans-serif;
         margin: 0;
         padding: 0;
-        background-image: url('guitar-756326_1280.jpg'); /* Background image */
+        background-image: url('guitar-756326_1280.jpg');
         background-size: cover;
         background-position: center;
-        background-repeat: no-repeat; /* Prevent image repetition */
+        background-repeat: no-repeat;
         display: flex;
         flex-direction: column;
         align-items: center;
     }
     .player-container {
         text-align: center;
-        color: #ffffff; /* Text color */
+        color: #ffffff;
         margin-top: auto;
         margin-bottom: 20px;
     }
@@ -35,8 +35,8 @@
         margin-bottom: 10px;
     }
     .song-button {
-        background-color: #3498db; /* Button color */
-        color: #ffffff; /* Text color */
+        background-color: #3498db;
+        color: #ffffff;
         padding: 10px 20px;
         border: none;
         border-radius: 5px;
@@ -48,16 +48,34 @@
         margin-left: 10px;
     }
     .song-button:hover {
-        background-color: #2980b9; /* Hover color */
+        background-color: #2980b9;
     }
     .cover {
         width: 50px;
         height: 50px;
         border-radius: 5px;
     }
+    .dropdown-container {
+        margin-top: 20px;
+    }
+    .dropdown {
+        padding: 10px;
+        font-size: 16px;
+        border-radius: 5px;
+        border: 1px solid #3498db;
+    }
 </style>
 </head>
 <body>
+
+<div class="dropdown-container">
+    <select id="categoryDropdown" class="dropdown" onchange="filterPlaylist()">
+        <option value="All">All</option>
+        <option value="Fav">Favorite</option>
+        <option value="Bollywood">Bollywood</option>
+        <option value="Punjabi">Punjabi</option>
+    </select>
+</div>
 
 <ul class="playlist" id="playlist">
     <!-- Songs will be dynamically added here -->
@@ -72,25 +90,32 @@
 
 <script>
     const songs = [
-        { name: "Chaleya", src: "songs/Chaleya(PagalWorld.com.sb).mp3", coverPath: "covers/10.jpg" },
-        { name: "Dekha Tenu Pehli Pehli Baar Ve", src: "songs/Dekha Tenu Pehli Pehli Baar Ve(PagalWorld.com.sb).mp3", coverPath: "covers/10.jpg" },
-        { name: "Heeriye", src: "songs/Heeriye(PagalWorld.com.sb).mp3", coverPath: "covers/10.jpg" },
-        { name: "Kabhi Shaam Dhale", src: "songs/Kabhi Shaam Dhale(PagalWorld.com.sb).mp3", coverPath: "covers/10.jpg" },
-        { name: "Maan Meri Jaan", src: "songs/Maan Meri Jaan(PagalWorld.com.sb).mp3", coverPath: "covers/10.jpg" },
-        { name: "O Mahi O Mahi", src: "songs/O Mahi O Mahi(PagalWorld.com.sb).mp3", coverPath: "covers/10.jpg" },
-        { name: "Kahani Suno", src: "songs/Kahani Suno(PagalWorld.com.sb).mp3", coverPath: "covers/10.jpg" },
-        { name: "Ve Kamleya", src: "songs/Ve Kamleya(PagalWorld.com.sb).mp3", coverPath: "covers/10.jpg" },
-        { name: "Dil Kya Kare", src: "songs/Dil Kya Kare(PagalWorld.com.sb).mp3", coverPath: "covers/10.jpg" },
-        { name: "Dil Pe Zakhm", src: "songs/Dil Pe Zakhm(PagalWorld.com.sb).mp3", coverPath: "covers/10.jpg" },
-        { name: "Kaash Tu Meri Ho Jaaye", src: "songs/Kaash Tu Meri Ho Jaaye(PagalWorld.com.sb).mp3", coverPath: "covers/10.jpg" },
-        { name: "Kesariya Tera Ishq Hai Piya", src: "songs/Kesariya Tera Ishq Hai Piya(PagalWorld.com.sb).mp3", coverPath: "covers/10.jpg" },
-        { name: "Pehli Pehli Baarish", src: "songs/Pehli Pehli Baarish(PagalWorld.com.sb).mp3", coverPath: "covers/10.jpg" },
-        { name: "Tera Mera Hai Pyar Amar", src: "songs/𝐓𝐞𝐫𝐚 𝐌𝐞𝐫𝐚 𝐇𝐚𝐢 𝐏𝐲𝐚𝐫 𝐀𝐦𝐚r.mp3", coverPath: "covers/6.jpg" },
-        { name: "Do Naino Ke Pechida Sa Galiyare", src: "songs/Do Naino Ke Pechida Sa Galiyare(PagalWorld.com.sb).mp3", coverPath: "" },
-        { name: "Teri Aayi Main Mar Jawan", src: "songs/Teri Aayi Main Mar Jawan(PagalWorld.com.sb).mp3", coverPath: "" },
-        { name: "Ke Janam Pyar Tumse Hai", src: "songs/Ke Janam Pyar Tumse Hai(PagalWorld.com.sb).mp3", coverPath: "" },
-        { name: "Qayamat Na Dhao", src: "songs/Qayamat Na Dhao(PagalWorld.com.sb).mp3", coverPath: "" }
-    ];
+        { name: "Chaleya", src: "songs/Chaleya(PagalWorld.com.sb).mp3", coverPath: "covers/10.jpg", category: "Bollywood" },
+        { name: "Dekha Tenu Pehli Pehli Baar Ve", src: "songs/Dekha Tenu Pehli Pehli Baar Ve(PagalWorld.com.sb).mp3", coverPath: "covers/10.jpg", category: "Bollywood" },
+        { name: "Heeriye", src: "songs/Heeriye(PagalWorld.com.sb).mp3", coverPath: "covers/10.jpg", category: "Bollywood" },
+        { name: "Kabhi Shaam Dhale", src: "songs/Kabhi Shaam Dhale(PagalWorld.com.sb).mp3", coverPath: "covers/10.jpg", category: "Bollywood" },
+        { name: "Maan Meri Jaan", src: "songs/Maan Meri Jaan(PagalWorld.com.sb).mp3", coverPath: "covers/10.jpg", category: "Fav" },
+        { name: "O Mahi O Mahi", src: "songs/O Mahi O Mahi(PagalWorld.com.sb).mp3", coverPath: "covers/10.jpg", category: "Fav" },
+        { name: "Kahani Suno", src: "songs/Kahani Suno(PagalWorld.com.sb).mp3", coverPath: "covers/10.jpg", category: "Fav" },
+        { name: "Ve Kamleya", src: "songs/Ve Kamleya(PagalWorld.com.sb).mp3", coverPath: "covers/10.jpg", category: "Fav" },
+        { name: "Dil Kya Kare", src: "songs/Dil Kya Kare(PagalWorld.com.sb).mp3", coverPath: "covers/10.jpg", category: "Fav" },
+        { name: "Dil Pe Zakhm", src: "songs/Dil Pe Zakhm(PagalWorld.com.sb).mp3", coverPath: "covers/10.jpg", category: "Bollywood" },
+        { name: "Kaash Tu Meri Ho Jaaye", src: "songs/Kaash Tu Meri Ho Jaaye(PagalWorld.com.sb).mp3", coverPath: "covers/10.jpg", category: "Bollywood" },
+        { name: "Kesariya Tera Ishq Hai Piya", src: "songs/Kesariya Tera Ishq Hai Piya(PagalWorld.com.sb).mp3", coverPath: "covers/10.jpg", category: "Bollywood" },
+        { name: "Pehli Pehli Baarish", src: "songs/Pehli Pehli Baarish(PagalWorld.com.sb).mp3", coverPath: "covers/10.jpg", category: "Bollywood" },
+        { name: "Tera Mera Hai Pyar Amar", src: "songs/𝐓𝐞𝐫𝐚 𝐌𝐞𝐫𝐚 𝐇𝐚𝐢 𝐏𝐲𝐚𝐫 𝐀𝐦𝐚r.mp3", coverPath: "covers/6.jpg", category: "Fav" },
+        { name: "Do Naino Ke Pechida Sa Galiyare", src: "songs/Do Naino Ke Pechida Sa Galiyare(PagalWorld.com.sb).mp3", coverPath: "covers/10.jpg", category: "Bollywood" },
+        { name: "Teri Aayi Main Mar Jawan", src: "songs/Teri Aayi Main Mar Jawan(PagalWorld.com.sb).mp3", coverPath: "covers/10.jpg", category: "Bollywood" },
+        { name: "Ke Janam Pyar Tumse Hai", src: "songs/Ke Janam Pyar Tumse Hai(PagalWorld.com.sb).mp3", coverPath: "covers/10.jpg", category: "Bollywood" },
+        { name: "Qayamat Na Dhao", src: "songs/Qayamat Na Dhao(PagalWorld.com.sb).mp3", coverPath: "covers/10.jpg", category: "Bollywood" },
+        { name: "Time Kadh Ke", src: "songs/Time Kadh Ke(PagalWorld.com.sb).mp3", coverPath: "covers/10.jpg", category: "Punjabi" },
+        { name: "Raani", src: "songs/Raani(PagalWorld.com.sb).mp3", coverPath: "covers/10.jpg", category: "Punjabi" },
+        { name: "Pyaar Kari Jaawan", src: "songs/Pyaar Kari Jaawan(PagalWorld.com.sb).mp3", coverPath: "covers/10.jpg", category: "Punjabi" },
+        { name: "Mera Na Reha", src: "songs/Mera Na Reha(PagalWorld.com.sb).mp3", coverPath: "covers/10.jpg", category: "Punjabi" },
+        { name: "Lakh Lakh Vadhaiyaan", src: "songs/Lakh Lakh Vadhaiyaan(PagalWorld.com.sb).mp3", coverPath: "covers/10.jpg", category: "Punjabi" },
+        { name: "Gaddi Vich", src: "songs/Gaddi Vich(PagalWorld.com.sb).mp3", coverPath: "covers/10.jpg", category: "Punjabi" },
+        { name: "Ilzaam", src: "songs/Ilzaam(PagalWorld.com.sb).mp3", coverPath: "covers/10.jpg", category: "Punjabi" },
+];
 
     let sortedSongs = [...songs]; // Create a copy of the songs array to sort
     const audioPlayer = document.getElementById('audioPlayer');
@@ -98,9 +123,10 @@
     let currentSongIndex = 0;
 
     // Function to populate the playlist
-    function populatePlaylist() {
-        sortedSongs.sort((a, b) => a.name.localeCompare(b.name)); // Sort songs alphabetically
-        sortedSongs.forEach((song, index) => {
+    function populatePlaylist(filteredSongs) {
+        playlist.innerHTML = ''; // Clear the existing playlist
+        filteredSongs.sort((a, b) => a.name.localeCompare(b.name)); // Sort songs alphabetically
+        filteredSongs.forEach((song, index) => {
             const listItem = document.createElement('li');
             const cover = document.createElement('img');
             cover.src = song.coverPath;
@@ -129,8 +155,21 @@
         playSong(currentSongIndex);
     }
 
+    // Function to filter the playlist based on category
+    function filterPlaylist() {
+        const selectedCategory = document.getElementById('categoryDropdown').value;
+        if (selectedCategory === 'All') {
+            populatePlaylist(songs);
+            sortedSongs = [...songs];
+        } else {
+            const filteredSongs = songs.filter(song => song.category === selectedCategory);
+            populatePlaylist(filteredSongs);
+            sortedSongs = [...filteredSongs];
+        }
+    }
+
     // Initialize the playlist
-    populatePlaylist();
+    populatePlaylist(songs);
 </script>
 
 </body>
