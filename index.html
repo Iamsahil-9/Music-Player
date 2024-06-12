@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>.</title>
-    <style>
+<style>
     body {
         font-family: Arial, sans-serif;
         margin: 0;
@@ -116,19 +116,17 @@
         { name: "Gaddi Vich", src: "songs/Gaddi Vich(PagalWorld.com.sb).mp3", coverPath: "covers/10.jpg", category: "Punjabi" },
         { name: "Ilzaam", src: "songs/Ilzaam(PagalWorld.com.sb).mp3", coverPath: "covers/10.jpg", category: "Punjabi" },
         { name: "Pehle bhi me tumse Mila hi", src: "songs/Pehle Bhi Main Tumse Mila Hu(PagalWorld.com.sb).mp3", coverPath: "covers/10.jpg", category: "Fav" },
-        
-];
+    ];
 
-    let sortedSongs = [...songs]; // Create a copy of the songs array to sort
+    let filteredSongs = [...songs]; // Create a copy of the songs array
     const audioPlayer = document.getElementById('audioPlayer');
     const playlist = document.getElementById('playlist');
     let currentSongIndex = 0;
 
     // Function to populate the playlist
-    function populatePlaylist(filteredSongs) {
+    function populatePlaylist(songs) {
         playlist.innerHTML = ''; // Clear the existing playlist
-        filteredSongs.sort((a, b) => a.name.localeCompare(b.name)); // Sort songs alphabetically
-        filteredSongs.forEach((song, index) => {
+        songs.forEach((song, index) => {
             const listItem = document.createElement('li');
             const cover = document.createElement('img');
             cover.src = song.coverPath;
@@ -145,7 +143,7 @@
 
     // Function to play a song
     function playSong(index) {
-        const song = sortedSongs[index];
+        const song = filteredSongs[index];
         audioPlayer.src = song.src;
         audioPlayer.play();
         currentSongIndex = index;
@@ -153,7 +151,7 @@
 
     // Function to play the next song
     function playNext() {
-        currentSongIndex = (currentSongIndex + 1) % sortedSongs.length;
+        currentSongIndex = (currentSongIndex + 1) % filteredSongs.length;
         playSong(currentSongIndex);
     }
 
@@ -161,13 +159,11 @@
     function filterPlaylist() {
         const selectedCategory = document.getElementById('categoryDropdown').value;
         if (selectedCategory === 'All') {
-            populatePlaylist(songs);
-            sortedSongs = [...songs];
+            filteredSongs = [...songs];
         } else {
-            const filteredSongs = songs.filter(song => song.category === selectedCategory);
-            populatePlaylist(filteredSongs);
-            sortedSongs = [...filteredSongs];
+            filteredSongs = songs.filter(song => song.category === selectedCategory);
         }
+        populatePlaylist(filteredSongs);
     }
 
     // Initialize the playlist
