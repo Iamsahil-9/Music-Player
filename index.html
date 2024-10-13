@@ -1,40 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>.</title>
-<style>
-    body {
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Music Playlist</title>
+    <style>
+      body {
         font-family: Arial, sans-serif;
         margin: 0;
-        padding: 0;
-        background-image: url('guitar-756326_1280.jpg');
+        padding: 20px;
+        background-image: url("guitar-756326_1280.jpg");
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
         display: flex;
         flex-direction: column;
         align-items: center;
-    }
-    .player-container {
-        text-align: center;
         color: #ffffff;
-        margin-top: auto;
+      }
+      h2 {
         margin-bottom: 20px;
-    }
-    .playlist {
+      }
+      .player-container {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+      .playlist {
         list-style: none;
         padding: 0;
         max-width: 800px;
         width: 100%;
-    }
-    .playlist li {
+      }
+      .playlist li {
         display: flex;
         align-items: center;
         margin-bottom: 10px;
-    }
-    .song-button {
+      }
+      .song-button {
         background-color: #3498db;
         color: #ffffff;
         padding: 10px 20px;
@@ -46,150 +48,433 @@
         text-align: left;
         transition: background-color 0.3s ease;
         margin-left: 10px;
-    }
-    .song-button:hover {
+      }
+      .song-button:hover {
         background-color: #2980b9;
-    }
-    .cover {
+      }
+      .cover {
         width: 50px;
         height: 50px;
         border-radius: 5px;
-    }
-    .dropdown-container {
-        margin-top: 20px;
-    }
-    .dropdown {
+        margin-right: 10px;
+      }
+      .dropdown-container,
+      .search-container {
+        margin: 20px 0;
+        width: 100%;
+        max-width: 800px;
+      }
+      .dropdown,
+      .search-input {
         padding: 10px;
         font-size: 16px;
         border-radius: 5px;
         border: 1px solid #3498db;
-    }
-</style>
-</head>
-<body>
-
-<div class="dropdown-container">
-    <select id="categoryDropdown" class="dropdown" onchange="filterPlaylist()">
+        width: calc(100% - 22px); /* accounting for padding */
+      }
+      .progress-container {
+        margin-top: 10px;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="dropdown-container">
+      <select
+        id="categoryDropdown"
+        class="dropdown"
+        onchange="filterPlaylist()"
+      >
         <option value="All">All</option>
         <option value="Fav">Favorite</option>
         <option value="Bollywood">Bollywood</option>
         <option value="Punjabi">Punjabi</option>
         <option value="Shobha">Shobha</option>
-    </select>
-</div>
+      </select>
+    </div>
 
-<ul class="playlist" id="playlist">
-    <!-- Songs will be dynamically added here -->
-</ul>
+    <div class="search-container">
+      <input
+        type="text"
+        id="searchInput"
+        class="search-input"
+        placeholder="Search songs..."
+        oninput="searchSongs()"
+      />
+    </div>
 
-<div class="player-container">
-    <h2>Playlist</h2>
-    <audio id="audioPlayer" controls autoplay onended="playNext()">
+    <ul class="playlist" id="playlist"></ul>
+
+    <div class="player-container">
+      <h2>Now Playing</h2>
+      <audio id="audioPlayer" controls onended="playNext()">
         Your browser does not support the audio element.
-    </audio>
-</div>
+      </audio>
+      <div class="progress-container">
+        <span id="currentTime">0:00</span> / <span id="duration">0:00</span>
+      </div>
+    </div>
 
-<script>
-    const songs = [
-        { name: "Chaleya", src: "songs/Chaleya(PagalWorld.com.sb).mp3", coverPath: "covers/10.jpg", category: "Bollywood" },
-        { name: "Dekha Tenu Pehli Pehli Baar Ve", src: "songs/Dekha Tenu Pehli Pehli Baar Ve(PagalWorld.com.sb).mp3", coverPath: "covers/10.jpg", category: "Bollywood" },
-        { name: "Heeriye", src: "songs/Heeriye(PagalWorld.com.sb).mp3", coverPath: "covers/10.jpg", category: "Bollywood" },
-        { name: "Kabhi Shaam Dhale", src: "songs/Kabhi Shaam Dhale(PagalWorld.com.sb).mp3", coverPath: "covers/10.jpg", category: "Bollywood" },
-        { name: "Maan Meri Jaan", src: "songs/Maan Meri Jaan(PagalWorld.com.sb).mp3", coverPath: "covers/10.jpg", category: "Fav" },
-        { name: "O Mahi O Mahi", src: "songs/O Mahi O Mahi(PagalWorld.com.sb).mp3", coverPath: "covers/10.jpg", category: "Fav" },
-        { name: "Kahani Suno", src: "songs/Kahani Suno(PagalWorld.com.sb).mp3", coverPath: "covers/10.jpg", category: "Fav" },
-        { name: "Dil Kya Kare", src: "songs/Dil Kya Kare(PagalWorld.com.sb).mp3", coverPath: "covers/10.jpg", category: "Fav" },
-        { name: "Dil Pe Zakhm", src: "songs/Dil Pe Zakhm(PagalWorld.com.sb).mp3", coverPath: "covers/10.jpg", category: "Bollywood" },
-        { name: "Kaash Tu Meri Ho Jaaye", src: "songs/Kaash Tu Meri Ho Jaaye(PagalWorld.com.sb).mp3", coverPath: "covers/10.jpg", category: "Bollywood" },
-        { name: "Kesariya Tera Ishq Hai Piya", src: "songs/Kesariya Tera Ishq Hai Piya(PagalWorld.com.sb).mp3", coverPath: "covers/10.jpg", category: "Bollywood" },
-        { name: "Pehli Pehli Baarish", src: "songs/Pehli Pehli Baarish(PagalWorld.com.sb).mp3", coverPath: "covers/10.jpg", category: "Bollywood" },
-        { name: "Tera Mera Hai Pyar Amar", src: "songs/𝐓𝐞𝐫𝐚 𝐌𝐞𝐫𝐚 𝐇𝐚𝐢 𝐏𝐲𝐚𝐫 𝐀𝐦𝐚r.mp3", coverPath: "covers/6.jpg", category: "Fav" },
-        { name: "Do Naino Ke Pechida Sa Galiyare", src: "songs/Do Naino Ke Pechida Sa Galiyare(PagalWorld.com.sb).mp3", coverPath: "covers/10.jpg", category: "Bollywood" },
-        { name: "Teri Aayi Main Mar Jawan", src: "songs/Teri Aayi Main Mar Jawan(PagalWorld.com.sb).mp3", coverPath: "covers/10.jpg", category: "Bollywood" },
-        { name: "Ke Janam Pyar Tumse Hai", src: "songs/Ke Janam Pyar Tumse Hai(PagalWorld.com.sb).mp3", coverPath: "covers/10.jpg", category: "Bollywood" },
-        { name: "Qayamat Na Dhao", src: "songs/Qayamat Na Dhao(PagalWorld.com.sb).mp3", coverPath: "covers/10.jpg", category: "Bollywood" },
-        { name: "Time Kadh Ke", src: "songs/Time Kadh Ke(PagalWorld.com.sb).mp3", coverPath: "covers/10.jpg", category: "Punjabi" },
-        { name: "Raani", src: "songs/Raani(PagalWorld.com.sb).mp3", coverPath: "covers/10.jpg", category: "Punjabi" },
-        { name: "Pyaar Kari Jaawan", src: "songs/Pyaar Kari Jaawan(PagalWorld.com.sb).mp3", coverPath: "covers/10.jpg", category: "Punjabi" },
-        { name: "Mera Na Reha", src: "songs/Mera Na Reha(PagalWorld.com.sb).mp3", coverPath: "covers/10.jpg", category: "Punjabi" },
-        { name: "Lakh Lakh Vadhaiyaan", src: "songs/Lakh Lakh Vadhaiyaan(PagalWorld.com.sb).mp3", coverPath: "covers/10.jpg", category: "Punjabi" },
-        { name: "Gaddi Vich", src: "songs/Gaddi Vich(PagalWorld.com.sb).mp3", coverPath: "covers/10.jpg", category: "Punjabi" },
-        { name: "Ilzaam", src: "songs/Ilzaam(PagalWorld.com.sb).mp3", coverPath: "covers/10.jpg", category: "Punjabi" },
-        { name: "Pehle bhi me tumse Mila hi", src: "songs/Pehle Bhi Main Tumse Mila Hu(PagalWorld.com.sb).mp3", coverPath: "covers/10.jpg", category: "Fav" },
-        { name: "Tum Mile", src: "songs/Tum Mile Tum Mile Original Motion Picturetrack 128 Kbps.mp3", coverPath: "covers/10.jpg", category: "Shobha" },
-        { name: "Ektarfa", src: "songs/Ektarfa_192(PaglaSongs).mp3", coverPath: "covers/10.jpg", category: "Shobha" },
-        { name: "Pyaar Hai Emiway Bantai", src: "songs/Pyaar Hai Emiway Bantai(PaglaSongs).mp3", coverPath: "covers/10.jpg", category: "Shobha" },
-        { name: "Miss Tujhe", src: "songs/new_192_Miss Tujhe - Emiway Bantai.mp3", coverPath: "covers/10.jpg", category: "Shobha" },
-        { name: "Kyun Dhunde", src: "songs/Kyun Dhunde_64(PagalWorld.com.sb).mp3", coverPath: "covers/10.jpg", category: "Shobha" },
-        { name: "Ishq Tera", src: "songs/Ishq Tera(PaglaSongs).mp3", coverPath: "covers/10.jpg", category: "Shobha" },
-        { name: "Ek Tarfa - Darshan Raval", src: "songs/new_192_Ek Tarfa - Darshan Raval.mp3", coverPath: "covers/10.jpg", category: "Shobha" },
-        { name: "Chura Liya", src: "songs/Chura Liya Hai Tumne New Version(PagalWorld).mp3", coverPath: "covers/10.jpg", category: "Shobha" },
-        { name: "Jaane De", src: "songs/Jaane De_64(PagalWorld.com.sb).mp3", coverPath: "covers/10.jpg", category: "Shobha" },
-        { name: "Dost-Banke", src: "songs/Dost-Banke(PaglaWorld.com.cm).mp3", coverPath: "covers/10.jpg", category: "Shobha" },
-        { name: "Gani", src: "songs/Gani_64(PagalWorld.com.sb).mp3", coverPath: "covers/10.jpg", category: "Shobha" },
-        { name: "Give Me Some Sunshine", src: "songs/Give Me Some Sunshine [128 Kbps]-(Pagalworld.Cx).mp3", coverPath: "covers/10.jpg", category: "Shobha" },
-        { name: "Husn", src: "songs/Husn_64(PagalWorld.com.sb).mp3", coverPath: "covers/10.jpg", category: "Shobha" },
-        { name: "Zaroori Tha", src: "songs/Zaroori Tha_64(PagalWorld.com.sb).mp3", coverPath: "covers/10.jpg", category: "Shobha" },
-        { name: "Tera chehra ", src: "songs/Tera Chehra_64(PagalWorld.com.sb).mp3", coverPath: "covers/10.jpg", category: "Shobha" },
-        { name: "Sanam Teri Kasam ", src: "songs/Sanam Teri Kasam_64(PagalWorld.com.sb).mp3", coverPath: "covers/10.jpg", category: "Shobha" }
-   
-        
-   
-   
-    ];
+    <script>
+      const songs = [
+        {
+          name: "Chaleya",
+          src: "songs/Chaleya(PagalWorld.com.sb).mp3",
+          coverPath: "covers/10.jpg",
+          category: "Bollywood",
+        },
+        {
+          name: "Dekha Tenu Pehli Pehli Baar Ve",
+          src: "songs/Dekha Tenu Pehli Pehli Baar Ve(PagalWorld.com.sb).mp3",
+          coverPath: "covers/10.jpg",
+          category: "Bollywood",
+        },
+        {
+          name: "Heeriye",
+          src: "songs/Heeriye(PagalWorld.com.sb).mp3",
+          coverPath: "covers/10.jpg",
+          category: "Bollywood",
+        },
+        {
+          name: "Kabhi Shaam Dhale",
+          src: "songs/Kabhi Shaam Dhale(PagalWorld.com.sb).mp3",
+          coverPath: "covers/10.jpg",
+          category: "Bollywood",
+        },
+        {
+          name: "Maan Meri Jaan",
+          src: "songs/Maan Meri Jaan(PagalWorld.com.sb).mp3",
+          coverPath: "covers/10.jpg",
+          category: "Fav",
+        },
+        {
+          name: "O Mahi O Mahi",
+          src: "songs/O Mahi O Mahi(PagalWorld.com.sb).mp3",
+          coverPath: "covers/10.jpg",
+          category: "Fav",
+        },
+        {
+          name: "Kahani Suno",
+          src: "songs/Kahani Suno(PagalWorld.com.sb).mp3",
+          coverPath: "covers/10.jpg",
+          category: "Fav",
+        },
+        {
+          name: "Dil Kya Kare",
+          src: "songs/Dil Kya Kare(PagalWorld.com.sb).mp3",
+          coverPath: "covers/10.jpg",
+          category: "Fav",
+        },
+        {
+          name: "Dil Pe Zakhm",
+          src: "songs/Dil Pe Zakhm(PagalWorld.com.sb).mp3",
+          coverPath: "covers/10.jpg",
+          category: "Bollywood",
+        },
+        {
+          name: "Kaash Tu Meri Ho Jaaye",
+          src: "songs/Kaash Tu Meri Ho Jaaye(PagalWorld.com.sb).mp3",
+          coverPath: "covers/10.jpg",
+          category: "Bollywood",
+        },
+        {
+          name: "Kesariya Tera Ishq Hai Piya",
+          src: "songs/Kesariya Tera Ishq Hai Piya(PagalWorld.com.sb).mp3",
+          coverPath: "covers/10.jpg",
+          category: "Bollywood",
+        },
+        {
+          name: "Pehli Pehli Baarish",
+          src: "songs/Pehli Pehli Baarish(PagalWorld.com.sb).mp3",
+          coverPath: "covers/10.jpg",
+          category: "Bollywood",
+        },
+        {
+          name: "Tera Mera Hai Pyar Amar",
+          src: "songs/𝐓𝐞𝐫𝐚 𝐌𝐞𝐫𝐚 𝐇𝐚𝐢 𝐏𝐲𝐚𝐫 𝐀𝐦𝐚r.mp3",
+          coverPath: "covers/6.jpg",
+          category: "Fav",
+        },
+        {
+          name: "Do Naino Ke Pechida Sa Galiyare",
+          src: "songs/Do Naino Ke Pechida Sa Galiyare(PagalWorld.com.sb).mp3",
+          coverPath: "covers/10.jpg",
+          category: "Bollywood",
+        },
+        {
+          name: "Teri Aayi Main Mar Jawan",
+          src: "songs/Teri Aayi Main Mar Jawan(PagalWorld.com.sb).mp3",
+          coverPath: "covers/10.jpg",
+          category: "Bollywood",
+        },
+        {
+          name: "Ke Janam Pyar Tumse Hai",
+          src: "songs/Ke Janam Pyar Tumse Hai(PagalWorld.com.sb).mp3",
+          coverPath: "covers/10.jpg",
+          category: "Bollywood",
+        },
+        {
+          name: "Qayamat Na Dhao",
+          src: "songs/Qayamat Na Dhao(PagalWorld.com.sb).mp3",
+          coverPath: "covers/10.jpg",
+          category: "Bollywood",
+        },
+        {
+          name: "Time Kadh Ke",
+          src: "songs/Time Kadh Ke(PagalWorld.com.sb).mp3",
+          coverPath: "covers/10.jpg",
+          category: "Punjabi",
+        },
+        {
+          name: "Raani",
+          src: "songs/Raani(PagalWorld.com.sb).mp3",
+          coverPath: "covers/10.jpg",
+          category: "Punjabi",
+        },
+        {
+          name: "Pyaar Kari Jaawan",
+          src: "songs/Pyaar Kari Jaawan(PagalWorld.com.sb).mp3",
+          coverPath: "covers/10.jpg",
+          category: "Punjabi",
+        },
+        {
+          name: "Mera Na Reha",
+          src: "songs/Mera Na Reha(PagalWorld.com.sb).mp3",
+          coverPath: "covers/10.jpg",
+          category: "Punjabi",
+        },
+        {
+          name: "Lakh Lakh Vadhaiyaan",
+          src: "songs/Lakh Lakh Vadhaiyaan(PagalWorld.com.sb).mp3",
+          coverPath: "covers/10.jpg",
+          category: "Punjabi",
+        },
+        {
+          name: "Gaddi Vich",
+          src: "songs/Gaddi Vich(PagalWorld.com.sb).mp3",
+          coverPath: "covers/10.jpg",
+          category: "Punjabi",
+        },
+        {
+          name: "Ilzaam",
+          src: "songs/Ilzaam(PagalWorld.com.sb).mp3",
+          coverPath: "covers/10.jpg",
+          category: "Punjabi",
+        },
+        {
+          name: "Pehle bhi me tumse Mila hi",
+          src: "songs/Pehle Bhi Main Tumse Mila Hu(PagalWorld.com.sb).mp3",
+          coverPath: "covers/10.jpg",
+          category: "Fav",
+        },
+        {
+          name: "Tum Mile",
+          src: "songs/Tum Mile Tum Mile Original Motion Picturetrack 128 Kbps.mp3",
+          coverPath: "covers/10.jpg",
+          category: "Shobha",
+        },
+        {
+          name: "Ektarfa",
+          src: "songs/Ektarfa_192(PaglaSongs).mp3",
+          coverPath: "covers/10.jpg",
+          category: "Shobha",
+        },
+        {
+          name: "Pyaar Hai Emiway Bantai",
+          src: "songs/Pyaar Hai Emiway Bantai(PaglaSongs).mp3",
+          coverPath: "covers/10.jpg",
+          category: "Shobha",
+        },
+        {
+          name: "Miss Tujhe",
+          src: "songs/new_192_Miss Tujhe - Emiway Bantai.mp3",
+          coverPath: "covers/10.jpg",
+          category: "Shobha",
+        },
+        {
+          name: "Kyun Dhunde",
+          src: "songs/Kyun Dhunde_64(PagalWorld.com.sb).mp3",
+          coverPath: "covers/10.jpg",
+          category: "Shobha",
+        },
+        {
+          name: "Ishq Tera",
+          src: "songs/Ishq Tera(PaglaSongs).mp3",
+          coverPath: "covers/10.jpg",
+          category: "Shobha",
+        },
+        {
+          name: "Ek Tarfa - Darshan Raval",
+          src: "songs/new_192_Ek Tarfa - Darshan Raval.mp3",
+          coverPath: "covers/10.jpg",
+          category: "Shobha",
+        },
+        {
+          name: "Chura Liya",
+          src: "songs/Chura Liya Hai Tumne New Version(PagalWorld).mp3",
+          coverPath: "covers/10.jpg",
+          category: "Shobha",
+        },
+        {
+          name: "Jaane De",
+          src: "songs/Jaane De_64(PagalWorld.com.sb).mp3",
+          coverPath: "covers/10.jpg",
+          category: "Shobha",
+        },
+        {
+          name: "Dost-Banke",
+          src: "songs/Dost-Banke(PaglaWorld.com.cm).mp3",
+          coverPath: "covers/10.jpg",
+          category: "Shobha",
+        },
+        {
+          name: "Gani",
+          src: "songs/Gani_64(PagalWorld.com.sb).mp3",
+          coverPath: "covers/10.jpg",
+          category: "Shobha",
+        },
+        {
+          name: "Give Me Some Sunshine",
+          src: "songs/Give Me Some Sunshine [128 Kbps]-(Pagalworld.Cx).mp3",
+          coverPath: "covers/10.jpg",
+          category: "Shobha",
+        },
+        {
+          name: "Husn",
+          src: "songs/Husn_64(PagalWorld.com.sb).mp3",
+          coverPath: "covers/10.jpg",
+          category: "Shobha",
+        },
+        {
+          name: "Zaroori Tha",
+          src: "songs/Zaroori Tha_64(PagalWorld.com.sb).mp3",
+          coverPath: "covers/10.jpg",
+          category: "Shobha",
+        },
+        {
+          name: "Tera chehra ",
+          src: "songs/Tera Chehra_64(PagalWorld.com.sb).mp3",
+          coverPath: "covers/10.jpg",
+          category: "Shobha",
+        },
+        {
+          name: "Sanam Teri Kasam ",
+          src: "songs/Sanam Teri Kasam_64(PagalWorld.com.sb).mp3",
+          coverPath: "covers/10.jpg",
+          category: "Shobha",
+        },
 
-    let filteredSongs = [...songs]; // Create a copy of the songs array
-    const audioPlayer = document.getElementById('audioPlayer');
-    const playlist = document.getElementById('playlist');
-    let currentSongIndex = 0;
+        //New song added
+        {
+          name: "Suniyan Suniyan Mp3",
+          src: "songs/",
+          coverPath: "",
+          category: "Shobha",
+        },
 
-    // Function to populate the playlist
-    function populatePlaylist(songs) {
-        playlist.innerHTML = ''; // Clear the existing playlist
+        {
+          name: "Mere Humsafar Mp3",
+          src: "songs/MereHumsafar.mp3",
+          coverPath: "",
+          category: "Shobha",
+        },
+        {
+          name: "Jo Tum Mere Ho",
+          src: "songs/Jo-Tum-mere.mp3",
+          coverPath: "",
+          category: "Shobha",
+        },
+        {
+          name: "Ik Lamha Mp3",
+          src: "songs/IkLamha.mp3",
+          coverPath: "",
+          category: "Shobha",
+        },
+        {
+          name: "Hamari Adhuri Kahani",
+          src: "songs/Humnava.mp3",
+          coverPath: "",
+          category: "Shobha",
+        },
+      ];
+
+      let filteredSongs = [...songs];
+      const audioPlayer = document.getElementById("audioPlayer");
+      const playlist = document.getElementById("playlist");
+      let currentSongIndex = 0;
+
+      audioPlayer.addEventListener("loadedmetadata", () => {
+        document.getElementById("duration").textContent = formatTime(
+          audioPlayer.duration
+        );
+      });
+
+      audioPlayer.addEventListener("timeupdate", () => {
+        document.getElementById("currentTime").textContent = formatTime(
+          audioPlayer.currentTime
+        );
+      });
+
+      function populatePlaylist(songs) {
+        playlist.innerHTML = "";
         songs.forEach((song, index) => {
-            const listItem = document.createElement('li');
-            const cover = document.createElement('img');
-            cover.src = song.coverPath;
-            cover.className = 'cover';
-            const button = document.createElement('button');
-            button.textContent = song.name;
-            button.className = 'song-button';
-            button.addEventListener('click', () => playSong(index));
-            listItem.appendChild(cover);
-            listItem.appendChild(button);
-            playlist.appendChild(listItem);
+          const listItem = document.createElement("li");
+          const cover = document.createElement("img");
+          cover.src = song.coverPath;
+          cover.className = "cover";
+          const button = document.createElement("button");
+          button.textContent = song.name;
+          button.className = "song-button";
+          button.addEventListener("click", () => playSong(index));
+          listItem.appendChild(cover);
+          listItem.appendChild(button);
+          playlist.appendChild(listItem);
         });
-    }
+      }
 
-    // Function to play a song
-    function playSong(index) {
+      function playSong(index) {
         const song = filteredSongs[index];
         audioPlayer.src = song.src;
         audioPlayer.play();
         currentSongIndex = index;
-    }
+      }
 
-    // Function to play the next song
-    function playNext() {
+      function playNext() {
         currentSongIndex = (currentSongIndex + 1) % filteredSongs.length;
         playSong(currentSongIndex);
-    }
+      }
 
-    // Function to filter the playlist based on category
-    function filterPlaylist() {
-        const selectedCategory = document.getElementById('categoryDropdown').value;
-        if (selectedCategory === 'All') {
-            filteredSongs = [...songs];
+      function filterPlaylist() {
+        const selectedCategory =
+          document.getElementById("categoryDropdown").value;
+        if (selectedCategory === "All") {
+          filteredSongs = [...songs];
         } else {
-            filteredSongs = songs.filter(song => song.category === selectedCategory);
+          filteredSongs = songs.filter(
+            (song) => song.category === selectedCategory
+          );
         }
         populatePlaylist(filteredSongs);
-    }
+      }
 
-    // Initialize the playlist
-    populatePlaylist(songs);
-</script>
+      function searchSongs() {
+        const query = document
+          .getElementById("searchInput")
+          .value.toLowerCase();
+        filteredSongs = songs.filter((song) =>
+          song.name.toLowerCase().includes(query)
+        );
+        populatePlaylist(filteredSongs);
+      }
 
-</body>
+      function formatTime(seconds) {
+        const minutes = Math.floor(seconds / 60);
+        const secs = Math.floor(seconds % 60);
+        return `${minutes}:${secs < 10 ? "0" : ""}${secs}`;
+      }
+
+      // Initialize the playlist
+      populatePlaylist(songs);
+    </script>
+  </body>
 </html>
-   
